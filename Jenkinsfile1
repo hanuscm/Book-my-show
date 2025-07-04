@@ -31,7 +31,7 @@ pipeline {
                          '-Dsonar.token=sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
                 }
             }
-        }
+        
         stage('Quality Gate') {
             steps {
                 script {
@@ -89,6 +89,8 @@ pipeline {
                 '''
             }
         }
+		
+	  }
     }
     post {
         always {
