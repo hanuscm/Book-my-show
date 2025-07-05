@@ -25,8 +25,8 @@ pipeline {
                          '-Dsonar.projectName=test ' +
                          '-Dsonar.projectVersion=test ' +
                          '-Dsonar.projectKey=1.0 ' +
-                         '-Dsonar.sources=/home/reddha5/jenkins/workspace/pipeline/gitrepo/complete/src ' +
-                         '-Dsonar.java.binaries=/home/reddha5/jenkins/workspace/pipeline/gitrepo/complete/target/classes ' +
+                         '-Dsonar.sources=/var/lib/jenkins/workspace/pipeline-docker/bookmyshow-app/src ' +
+                         '-Dsonar.java.binaries=/var/lib/jenkins/workspace/pipeline-docker/bookmyshow-app/target/classes ' +
                          '-Dsonar.host.url=http://localhost:9000 ' +
                          '-Dsonar.token=sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
                 }
