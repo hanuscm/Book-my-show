@@ -47,7 +47,7 @@ pipeline {
                 if [ -f package.json ]; then
                     rm -rf node_modules package-lock.json  # Remove old dependencies
                     npm install --force  # Install fresh dependencies
-                    npm audit fix --force && sleep 10 && npm audit fix --force
+                    npm audit fix --force & sleep 10 & npm audit fix --force
                 else
                     echo "Error: package.json not found in bookmyshow-app!"
                     exit 1
