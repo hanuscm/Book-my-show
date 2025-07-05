@@ -66,6 +66,7 @@ pipeline {
                         docker build --no-cache -t sailajajaswi/dockerhub:latest -f ${WORKSPACE}/bookmyshow-app/Dockerfile bookmyshow-app
 
                         echo "Pushing Docker image to registry..."
+                        docker login --username sailajajaswi --password Hany@7869
                         docker push sailajajaswi/dockerhub:latest
                         '''
                     //}
