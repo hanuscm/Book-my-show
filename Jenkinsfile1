@@ -4,9 +4,9 @@ pipeline {
         jdk 'JDK17'
         nodejs 'node23'
     }
-    environment {
+    //environment {
         //SCANNER_HOME = tool 'sonar-scanner'
-    }
+    //}
     stages {
         stage('Clean Workspace') {
             steps {
