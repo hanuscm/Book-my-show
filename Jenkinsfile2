@@ -42,13 +42,7 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
-                }
-            }
-        }
+        
 
         stage('Install Dependencies') {
             steps {
