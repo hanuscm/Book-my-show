@@ -9,10 +9,10 @@ pipeline {
     }
 
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
-        DOCKER_IMAGE = 'kastrov/bms:latest'
-        EKS_CLUSTER_NAME = 'kastro-eks'
-        AWS_REGION = 'us-east-1'
+        //SCANNER_HOME = tool 'sonar-scanner'
+        DOCKER_IMAGE = 'sailajajaswi/dockerhub:latest'
+        //EKS_CLUSTER_NAME = 'kastro-eks'
+        //AWS_REGION = 'us-east-1'
     }
 
     stages {
@@ -24,19 +24,21 @@ pipeline {
 
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/KastroVKiran/Book-My-Show.git'
+                git branch: 'main', url: 'https://github.com/hanuscm/Book-my-show.git'
                 sh 'ls -la'  // Verify files after checkout
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh ''' 
-                    $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=BMS \
-                        -Dsonar.projectKey=BMS
-                    '''
+                sh '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner ' +
+                         '-Dsonar.projectName=test ' +
+                         '-Dsonar.projectVersion=test ' +
+                         '-Dsonar.projectKey=1.0 ' +
+                         '-Dsonar.sources=/var/lib/jenkins/workspace/pipeline-docker/bookmyshow-app/src ' +
+                         '-Dsonar.java.binaries=/var/lib/jenkins/workspace/pipeline-docker/bookmyshow-app/target/classes ' +
+                         '-Dsonar.host.url=http://localhost:9000 ' +
+                         '-Dsonar.token=sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
                 }
             }
         }
@@ -44,7 +46,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
                 }
             }
         }
@@ -65,49 +67,32 @@ pipeline {
             }
         }
 
-        stage('OWASP FS Scan') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
-
-        stage('Trivy FS Scan') {
-            steps {
-                sh 'trivy fs . > trivyfs.txt'
-            }
-        }
+        
 
         stage('Docker Build & Push') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    //withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
                         sh ''' 
                         echo "Building Docker image..."
-                        docker build --no-cache -t $DOCKER_IMAGE -f bookmyshow-app/Dockerfile bookmyshow-app
+                        chmod 775  ${WORKSPACE}/bookmyshow-app/Dockerfile
+                        docker build --no-cache -t sailajajaswi/dockerhub:latest -f ${WORKSPACE}/bookmyshow-app/Dockerfile bookmyshow-app
 
-                        echo "Pushing Docker image to Docker Hub..."
-                        docker push $DOCKER_IMAGE
+                        echo "Pushing Docker image to registry..."
+                        docker login --username sailajajaswi --password Hany@7869
+                        docker push sailajajaswi/dockerhub:latest
+                        
                         '''
-                    }
+                    //}
                 }
             }
         }
 
-        stage('Deploy to EKS Cluster') {
+        stage('Deploy to local machine ') {
             steps {
                 script {
                     sh '''
-                    echo "Verifying AWS credentials..."
-                    aws sts get-caller-identity
-
-                    echo "Configuring kubectl for EKS cluster..."
-                    aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
-
-                    echo "Verifying kubeconfig..."
-                    kubectl config view
-
-                    echo "Deploying application to EKS..."
+                    
                     kubectl apply -f deployment.yml
                     kubectl apply -f service.yml
 
