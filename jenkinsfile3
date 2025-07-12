@@ -89,6 +89,8 @@ pipeline {
                 echo "Fetching logs..."
                 sleep 5  # Give time for the app to start
                 docker logs bms
+                kubectl apply -f deployment.yml --validate=false
+                kubectl get pods
                 '''
             }
         }
