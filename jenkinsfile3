@@ -96,14 +96,14 @@ pipeline {
        stage('Deploy to local machine ') {
             steps {
                 script {
-                    sh '''
+                  sh '''
                     
-                    kubectl apply -f deployment.yml --validate=false
+                      kubectl apply -f deployment.yml --validate=false
                     //kubectl apply -f service.yml
 
                     echo "Verifying deployment..."
-                    kubectl get pods
-                    kubectl get svc
+                      kubectl get pods
+                      kubectl get svc
                     '''
                 }
             }
