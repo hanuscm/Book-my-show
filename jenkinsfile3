@@ -81,7 +81,7 @@ pipeline {
                 docker rm bms || true
 
                 echo "Running new container on port 3000..."
-                docker run -d --restart=always --name bms -p 3000:3000 sailajajaswi/dockerhub:latest
+                //docker run -d --restart=always --name bms -p 3000:3000 sailajajaswi/dockerhub:latest
 
                 echo "Checking running containers..."
                 docker ps -a
@@ -98,7 +98,7 @@ pipeline {
                 script {
                     sh '''
                     
-                    kubectl apply -f deployment.yml
+                    kubectl apply -f deployment.yml --validate=false
                     //kubectl apply -f service.yml
 
                     echo "Verifying deployment..."
