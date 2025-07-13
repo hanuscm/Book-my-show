@@ -88,7 +88,7 @@ pipeline {
 
                   echo "Fetching logs..."
                   sleep 5  # Give time for the app to start
-                #docker logs bms
+                  #docker logs bms
                   kubectl delete deployment bms-app --ignore-not-found
                   kubectl apply -f deployment.yml --validate=false
                   sleep 800
@@ -97,7 +97,7 @@ pipeline {
                 '''
             }
             stage('Port Forward') {
-            steps {
+              steps {
                 script {
                     // Run port-forward in background
                     sh 'kubectl port-forward deployment/bms-app 3000:3000 &'
@@ -116,7 +116,7 @@ pipeline {
                     // Kill the port-forward when done
                     sh "kill ${pid}"
                 }
-            }
+             }
         }
         }
 		
