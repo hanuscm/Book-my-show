@@ -92,10 +92,32 @@ pipeline {
                   kubectl delete deployment bms-app --ignore-not-found
                   kubectl apply -f deployment.yml --validate=false
                   sleep 800
-                  kubectl port-forward deployment/bms-app 3000:3000 &
+                  #kubectl port-forward deployment/bms-app 3000:3000 &
                   kubectl get pods
                 '''
             }
+            stage('Port Forward') {
+            steps {
+                script {
+                    // Run port-forward in background
+                    sh 'kubectl port-forward deployment/bms-app 3000:3000 &'
+                    
+                    // Get the PID of the background process
+                    pid = sh(script: "ps -ef | grep 'kubectl port-forward deployment/bms-app' | grep -v grep | awk '{print \$2}'", returnStdout: true).trim()
+                    
+                    // Store the PID so we can kill it later
+                    echo "Port-forward running with PID: ${pid}"
+                    
+                    // Add some delay to verify it's working (remove in production)
+                    sleep(time: 10, unit: 'SECONDS')
+                    
+                    // You would typically do your work here that needs the port-forward
+                    
+                    // Kill the port-forward when done
+                    sh "kill ${pid}"
+                }
+            }
+        }
         }
 		
        
