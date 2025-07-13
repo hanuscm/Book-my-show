@@ -76,21 +76,21 @@ pipeline {
         stage('Deploy to Container') {
             steps {
                 sh ''' 
-                echo "Stopping and removing old container..."
-                docker stop bms || true
-                docker rm bms || true
+                  echo "Stopping and removing old container..."
+                  docker stop bms || true
+                  docker rm bms || true
 
-                echo "Running new container on port 3000..."
-                #docker run -d --restart=always --name bms -p 3000:3000 sailajajaswi/dockerhub:latest
+                  echo "Running new container on port 3000..."
+                  #docker run -d --restart=always --name bms -p 3000:3000 sailajajaswi/dockerhub:latest
 
-                echo "Checking running containers..."
-                docker ps -a
+                  echo "Checking running containers..."
+                  docker ps -a
 
-                echo "Fetching logs..."
-                sleep 5  # Give time for the app to start
-                docker logs bms
-                #kubectl apply -f deployment.yml --validate=false
-                #kubectl get pods
+                  echo "Fetching logs..."
+                  sleep 5  # Give time for the app to start
+                #docker logs bms
+                  kubectl apply -f deployment.yml --validate=false
+                  kubectl get pods
                 '''
             }
         }
