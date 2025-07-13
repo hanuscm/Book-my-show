@@ -96,7 +96,7 @@ pipeline {
                   kubectl get pods
                 '''
             }
-            stage('Port Forward') {
+        stage('Port Forward') {
               steps {
                 script {
                     // Run port-forward in background
