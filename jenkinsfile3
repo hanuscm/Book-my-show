@@ -77,8 +77,8 @@ pipeline {
             steps {
                 sh ''' 
                   echo "Stopping and removing old container..."
-                  docker stop bms || true
-                  docker rm bms || true
+                  #docker stop bms || true
+                  #docker rm bms || true
 
                   echo "Running new container on port 3000..."
                   #docker run -d --restart=always --name bms -p 3000:3000 sailajajaswi/dockerhub:latest
@@ -90,27 +90,13 @@ pipeline {
                   sleep 5  # Give time for the app to start
                 #docker logs bms
                   kubectl apply -f deployment.yml --validate=false
+                  kubectl get pods -l app=my-app -o name |  kubectl port-forward bms-app-6467fd7679-n4q65 3000:3000 &
                   kubectl get pods
                 '''
             }
         }
 		
-       stage('Deploy to local machine ') {
-            steps {
-                script {
-                    sh 'kubectl apply -f deployment.yml --validate=false'
-                   sh '''
-                    
-                      
-                    //kubectl apply -f service.yml
-
-                    echo "Verifying deployment..."
-                      kubectl get pods
-                      kubectl get svc
-                    '''
-                }
-            }
-        }
+       
 		
 	  }
     }
