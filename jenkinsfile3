@@ -90,7 +90,7 @@ pipeline {
                   sleep 5  # Give time for the app to start
                 #docker logs bms
                   kubectl apply -f deployment.yml --validate=false
-                  kubectl get pods -l app=my-app -o name |  kubectl port-forward bms-app-6467fd7679-n4q65 3000:3000 &
+                  kubectl port-forward deployment/bms-app 3000:3000 &
                   kubectl get pods
                 '''
             }
