@@ -63,7 +63,7 @@ pipeline {
                         sh ''' 
                         echo "Building Docker image..."
                         chmod 775  ${WORKSPACE}/bookmyshow-app/Dockerfile
-                        docker build --no-cache -t sailajajaswi/dockerhub:latest -f ${WORKSPACE}/bookmyshow-app/Dockerfile bookmyshow-app
+                        docker build --build-arg CACHE_BUST=$(date +%s) -t sailajajaswi/dockerhub:latest -f ${WORKSPACE}/bookmyshow-app/Dockerfile bookmyshow-app
 
                         echo "Pushing Docker image to registry..."
                         docker login --username sailajajaswi --password Hany@7869
