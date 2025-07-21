@@ -102,7 +102,7 @@ pipeline {
               steps {
                 script {
                     // Run port-forward in background
-                    sh 'kubectl port-forward deployment/bms-app 3000:3000 &'
+                    sh 'kubectl port-forward deployment/bms-app 1000:1000 &'
                     
                     // Get the PID of the background process
                     pid = sh(script: "ps -ef | grep 'kubectl port-forward deployment/bms-app' | grep -v grep | awk '{print \$2}'", returnStdout: true).trim()
