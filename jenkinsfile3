@@ -46,6 +46,7 @@ pipeline {
                 ls -la  # Verify package.json exists
                 if [ -f package.json ]; then
                     rm -rf node_modules package-lock.json  # Remove old dependencies
+                    npm cache clean --force
                     npm install --force  # Install fresh dependencies
                     npm audit fix --force & sleep 10 & sleep 100 & npm audit fix --force & sleep 100 & npm fund
                     sleep 300
