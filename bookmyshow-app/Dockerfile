@@ -17,7 +17,7 @@ RUN npm install
 COPY . .
 
 # Expose port 3000
-EXPOSE 3000
+EXPOSE 1000
 
 # Set environment variable to prevent OpenSSL errors
 ENV NODE_OPTIONS=--openssl-legacy-provider
