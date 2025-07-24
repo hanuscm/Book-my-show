@@ -12,7 +12,8 @@ RUN npm install postcss@8.4.21 postcss-safe-parser@6.0.0 --legacy-peer-deps
 
 
 # Install dependencies
-RUN npm install
+RUN npm install --force  # Install fresh dependencies
+RUN npm audit fix --force & sleep 10 & sleep 100 & npm audit fix --force & sleep 100 & npm fund
 
 # Copy the entire project
 COPY . .
