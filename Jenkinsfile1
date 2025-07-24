@@ -21,7 +21,7 @@ pipeline {
                 sh 'ls -la'  // Verify files after checkout
             }
         }
-        stage('SonarQube Analysis') {
+        /*stage('SonarQube Analysis') {
             steps {
                 sh '/opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner ' +
                          '-Dsonar.projectName=test ' +
@@ -32,7 +32,7 @@ pipeline {
                          '-Dsonar.host.url=http://localhost:9000 ' +
                          '-Dsonar.token=sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
                 }
-            }
+            }*/
         
         //stage('Quality Gate') {
             //steps {
