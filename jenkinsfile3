@@ -30,7 +30,7 @@ pipeline {
                          '-Dsonar.host.url=http://localhost:9000 ' +
                          '-Dsonar.token=sqa_efe87919cd591baf02f90f4b5fe23341e370b910'
                 }
-            }/*
+            }*/
         
         //stage('Quality Gate') {
             //steps {
