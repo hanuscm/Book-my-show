@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+    tools {
+        jdk 'JDK17'
+        nodejs 'node23'
+    }
+    //environment {
+        //SCANNER_HOME = tool 'sonar-scanner'
+    //}
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('Deploy to Container') {
+            steps {
+                sh ''' 
+                  echo "Stopping and removing old container..."
+                  #docker stop bms || true
+                  #docker rm bms || true
+
+                  echo "Running new container on port 3000..."
+                  #docker run -d --restart=always --name bms -p 3000:3000 sailajajaswi/dockerhub:latest
+
+                  echo "Checking running containers..."
+                  docker ps -a
+
+                  echo "Fetching logs..."
+                  sleep 5  # Give time for the app to start
+                  #docker logs bms
+                  kubectl delete deployment bms-app --ignore-not-found
+                  kubectl apply -f deployment.yml --validate=false
+                  sleep 800
+                  #kubectl port-forward deployment/bms-app 3000:3000 &
+                  kubectl get pods
+                '''
+            }
+        
+        }
+		stage('Port Forward') {
+              steps {
+                script {
+                    // Run port-forward in background
+                    sh 'kubectl port-forward deployment/bms-app 1000:1000 &'
+                    
+                    // Get the PID of the background process
+                    pid = sh(script: "ps -ef | grep 'kubectl port-forward deployment/bms-app' | grep -v grep | awk '{print \$2}'", returnStdout: true).trim()
+                    
+                    // Store the PID so we can kill it later
+                    echo "Port-forward running with PID: ${pid}"
+                    
+                    // Add some delay to verify it's working (remove in production)
+                    sleep(time: 10, unit: 'SECONDS')
+                    
+                    // You would typically do your work here that needs the port-forward
+                    
+                    // Kill the port-forward when done
+                    sh "kill ${pid}"
+                }
+             }
+        }
+		
+       
+		
+	  }
+    }
+    
+//}
