@@ -13,6 +13,12 @@ pipeline {
                 cleanWs()
             }
         }
+        stage('Checkout from Git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/hanuscm/Book-my-show.git'
+                sh 'ls -la'  // Verify files after checkout
+            }
+        }
         stage('Deploy to Container') {
             steps {
                 sh ''' 
