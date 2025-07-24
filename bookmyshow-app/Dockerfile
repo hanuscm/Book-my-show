@@ -8,8 +8,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Force install a compatible PostCSS version to fix the issue
-RUN npm install postcss@8.4.21 postcss-safe-parser@6.0.0 --legacy-peer-deps
-
+#RUN npm install postcss@8.4.21 postcss-safe-parser@6.0.0 --legacy-peer-deps
+RUN npm install postcss@latest postcss-flexbugs-fixes@latest postcss-preset-env@latest react-scripts@latest --legacy-peer-deps
 
 # Install dependencies
 RUN npm install --force  # Install fresh dependencies
