@@ -37,7 +37,7 @@ pipeline {
                   #docker logs bms
                   kubectl delete deployment bms-app --ignore-not-found
                   kubectl apply -f deployment.yml --validate=false
-                  sleep 100
+                  sleep 10
                   #kubectl port-forward deployment/bms-app 3000:3000 &
                   kubectl get pods
                 '''
