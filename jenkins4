@@ -62,7 +62,7 @@ pipeline {
                     // You would typically do your work here that needs the port-forward
                     
                     // Kill the port-forward when done
-                    sh "kill ${pid}"
+                    //sh "kill ${pid}"
                 }
              }
         }
