@@ -23,7 +23,7 @@ EXPOSE 1000
 
 # Set environment variable to prevent OpenSSL errors
 ENV NODE_OPTIONS=--openssl-legacy-provider
-ENV PORT=3000
+ENV PORT=4000
 
 # Start the application
 CMD ["npm", "start"]
